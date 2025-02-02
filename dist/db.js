@@ -40,14 +40,11 @@ exports.UserModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
-// Explicitly specify the .env file path
-dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../config.env") });
-// Ensure MONGO_URI is defined
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../.env") }); // Load environment variables from a file
 const mongoUri = process.env.MONGO_URI;
 if (!mongoUri) {
     throw new Error("❌ MONGO_URI is not defined in the environment variables");
 }
-// Connect to MongoDB with error handling
 mongoose_1.default
     .connect(mongoUri)
     .then(() => console.log("✅ Connected to MongoDB Atlas"))

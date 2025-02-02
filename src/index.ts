@@ -1,42 +1,57 @@
-import express from "express"
-import jsonwebtoken from "jsonwebtoken"
-import mongoose from "mongoose"
-import { UserModel } from "./db"
+import express from "express";
+import jwt from "jsonwebtoken";
+import { UserModel } from "./db";
+import dotenv from "dotenv";
+import path from "path";
 
+const result = dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
+const JWT_SECRET = process.env.JWT_SECRET;
 
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in the environment variables");  
+}
 
-const app = express()
+const app = express();
 app.use(express.json());
-// npm install @types/express //-> install types for express to avoid error
-// .d.ts file is a declaration file that tells typescript what the types are for a given module
 
 app.post("/api/v1/signup", async(req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-
+  try {
   await UserModel.create({ 
     username: username,
     password: password 
   });
 
   res.json({ message: "User created" });
+  
+  } catch (error) {
+    res.status(411).json({ message: "User exists" });
+  }
+})  
 
-})
+app.post("/api/v1/signin", async (req, res) => {
+  const { username, password } = req.body;
 
-app.post("/api/v1/signin", (req, res) => { })
+  const ExistingUser = await UserModel.findOne({
+    username,
+    password,
+  });
 
-app.post("/api/v1/content", (req, res) => { })  
-
-app.get("/api/v1/content", (req, res) => { })
-
-app.delete("/api/v1/content", (req, res) => { })    
-
-app.post("/api/v1/brain/share", (req, res) => { })
-
-app.get("/api/v1/brain/:shareLink", (req, res) => { })
-
+  if (ExistingUser) {
+    const token = jwt.sign(
+      {
+        id: ExistingUser._id,
+      },
+      JWT_SECRET 
+    );
+    res.json({ message: "User signed in", token: token });
+  } else {
+    res.status(401).json({ message: "Invalid credentials" });
+  }
+});
 
 app.listen(3000, () => {
-  console.log("Server is running on port 3000")
-})
+  console.log("Server is running on port 3000");
+});

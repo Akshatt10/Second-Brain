@@ -5,7 +5,7 @@ node_modules/
 dist/
 
 # Ignore environment variables
-config.env
+.env
 .env
 
 # Ignore TypeScript cache
