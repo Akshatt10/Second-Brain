@@ -1,0 +1,21 @@
+# Ignore Node.js dependencies
+node_modules/
+
+# Ignore build output
+dist/
+
+# Ignore environment variables
+config.env
+.env
+
+# Ignore TypeScript cache
+*.tsbuildinfo
+
+# Ignore logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore editor/IDE files
+.vscode/
+.idea/
