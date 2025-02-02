@@ -32,12 +32,28 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-mongoose_1.default.connect('mongodb+srv://akshattyagi1010:MxlWrDc31UQErA1O@second-brain.d2auj.mongodb.net/');
+const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
+// Explicitly specify the .env file path
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, "../config.env") });
+// Ensure MONGO_URI is defined
+const mongoUri = process.env.MONGO_URI;
+if (!mongoUri) {
+    throw new Error("❌ MONGO_URI is not defined in the environment variables");
+}
+// Connect to MongoDB with error handling
+mongoose_1.default
+    .connect(mongoUri)
+    .then(() => console.log("✅ Connected to MongoDB Atlas"))
+    .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 const UserSchema = new mongoose_1.Schema({
-    username: { type: String, unique: true },
-    password: { type: String },
+    username: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
 });
-exports.UserModel = (0, mongoose_1.model)('User', UserSchema);
+exports.UserModel = (0, mongoose_1.model)("User", UserSchema);
