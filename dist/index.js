@@ -47,15 +47,14 @@ app.post("/api/v1/signin", (req, res) => __awaiter(void 0, void 0, void 0, funct
     if (ExistingUser) {
         const token = jsonwebtoken_1.default.sign({
             id: ExistingUser._id,
-        }, JWT_SECRET // Now JWT_SECRET is guaranteed to be a valid string
-        );
+        }, JWT_SECRET);
         res.json({ message: "User signed in", token: token });
     }
     else {
         res.status(401).json({ message: "Invalid credentials" });
     }
 }));
-// Server setup
+// app.post("/api/v1/content" a)
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });

@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.post("/api/v1/signup", async(req, res) => {
   const username = req.body.username;
-  const password = req.body.password;
+  const password = req.body.password; 
   try {
   await UserModel.create({ 
     username: username,
@@ -51,6 +51,8 @@ app.post("/api/v1/signin", async (req, res) => {
     res.status(401).json({ message: "Invalid credentials" });
   }
 });
+
+// app.post("/api/v1/content" a)
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
