@@ -18,6 +18,7 @@ app.use(express.json());
 app.post("/api/v1/signup", async(req, res) => {
   const username = req.body.username;
   const password = req.body.password; 
+
   try {
   await UserModel.create({ 
     username: username,
@@ -52,7 +53,11 @@ app.post("/api/v1/signin", async (req, res) => {
   }
 });
 
-// app.post("/api/v1/content" a)
+app.post("/api/v1/content", (req, res) => {
+    const link = req.body.link;
+    const title = req.body.title;
+    
+})
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
