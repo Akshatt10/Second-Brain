@@ -1,8 +1,9 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { UserModel } from "./db";
+import { ContentModel, UserModel } from "./db";
 import dotenv from "dotenv";
 import path from "path";
+import { userMiddlware } from "./middleware";
 
 const result = dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
@@ -53,10 +54,17 @@ app.post("/api/v1/signin", async (req, res) => {
   }
 });
 
-app.post("/api/v1/content", (req, res) => {
+app.post("/api/v1/content", userMiddlware, (req, res) => {
     const link = req.body.link;
     const title = req.body.title;
-    
+
+    ContentModel.create({
+      link,
+      title,
+      //@ts-ignore
+      userId: req.userId,
+      tags:[],
+    });
 })
 
 app.listen(3000, () => {

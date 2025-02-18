@@ -54,7 +54,10 @@ app.post("/api/v1/signin", (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.status(401).json({ message: "Invalid credentials" });
     }
 }));
-// app.post("/api/v1/content" a)
+app.post("/api/v1/content", (req, res) => {
+    const link = req.body.link;
+    const title = req.body.title;
+});
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
